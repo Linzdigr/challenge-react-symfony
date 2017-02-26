@@ -1,0 +1,13 @@
+AppBundle\Entity\Account:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotBlank: ~
+            - Type: string
+
+AppBundle\Entity\AccountSheet:
+    properties:
+        name:
+            - NotBlank: ~
+            - Type: string

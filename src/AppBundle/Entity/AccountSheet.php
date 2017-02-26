@@ -54,6 +54,10 @@
             return $this->id;
         }
 
+        public function setAccount(Account $ac){
+            $this->account = $ac;
+        }
+
         public function getName(){
             return $this->name;
         }
@@ -72,12 +76,12 @@
          * @ORM\PrePersist
          */
         public function preInsert(){
-            $this->created_at = $this->updated_at = \DateTime('now');
+            $this->created_at = $this->updated_at = new \DateTime('now');
         }
 
         /** @ORM\PreUpdate */
         public function preUpdate(){
-            $this->updated_at = \DateTime('now');
+            $this->updated_at = new \DateTime('now');
         }
 
         public function __destruct(){}

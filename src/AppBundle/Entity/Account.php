@@ -3,13 +3,15 @@
 
     use Doctrine\ORM\Mapping as ORM;
     use Doctrine\Common\Collections\ArrayCollection;
+    use AppBundle\Entity\GenericEntity;
 
     /**
      * @ORM\Entity()
      * @ORM\Table(name="accounts",
      *      uniqueConstraints={@ORM\UniqueConstraint(name="accounts_name_unique",columns={"name"})})
+     * @ORM\HasLifecycleCallbacks
      */
-    class Account{
+    class Account extends GenericEntity{
         /**
          * @ORM\Id
          * @ORM\Column(type="integer", nullable=false)
@@ -28,21 +30,15 @@
         protected $description;
 
         /**
-         * @ORM\Column(type="string")
-         */
-        protected $address;
-
-        /**
          * @ORM\OneToMany(targetEntity="AccountSheet", mappedBy="account")
          * @var AccountSheet[]
          */
         protected $accountSheets;
 
-        public function __construct($name = null, $description = null,  $address = null){
+        public function __construct($name = null, $description = null){
             $this->accountSheets = new ArrayCollection();
             $this->name = $name;
             $this->description = $description;
-            $this->address = $address;
         }
 
         public function getAccountSheets(){
@@ -55,10 +51,6 @@
 
         public function getName(){
             return $this->name;
-        }
-
-        public function getAddress(){
-            return $this->address;
         }
 
         public function getDescription(){
@@ -77,11 +69,6 @@
 
         public function setName($name){
             $this->name = $name;
-            return $this;
-        }
-
-        public function setAddress($address){
-            $this->address = $address;
             return $this;
         }
 

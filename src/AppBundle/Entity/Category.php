@@ -2,6 +2,7 @@
     namespace AppBundle\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
+    use Doctrine\Common\Collections\ArrayCollection;
 
     /**
      * @ORM\Entity()
@@ -37,7 +38,7 @@
         protected $updated_at;
 
         /**
-         * @ORM\OneToMany(targetEntity="Category", mappedBy="operations")
+         * @ORM\OneToMany(targetEntity="Operation", mappedBy="category")
          * @var Operation[]
          */
         protected $operations;
@@ -59,22 +60,16 @@
             return $this->accountSheet;
         }
 
-        public function setCategory(Category $cat){
-            $this->category = $cat;
-
-            return $this;
-        }
-
         /**
          * @ORM\PrePersist
          */
         public function preInsert(){
-            $this->created_at = $this->updated_at = \DateTime('now');
+            $this->created_at = $this->updated_at = new \DateTime('now');
         }
 
         /** @ORM\PreUpdate */
         public function preUpdate(){
-            $this->updated_at = \DateTime('now');
+            $this->updated_at = new \DateTime('now');
         }
 
         public function __destruct(){}

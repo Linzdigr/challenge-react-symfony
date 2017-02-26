@@ -1,3 +1,18 @@
 app:
-    resource: "@AppBundle/Controller/"
+    resource: "@AppBundle/Controller/DefaultController.php"
     type:     annotation
+
+accounts:
+    type:     rest
+    resource: AppBundle\Controller\REST\AccountController
+    prefix: 'api'
+
+accountSheets:
+    type:     rest
+    resource: AppBundle\Controller\REST\AccountSheetController
+    prefix: 'api'
+
+operation:
+    type:     rest
+    resource: AppBundle\Controller\REST\OperationController
+    prefix: 'api'

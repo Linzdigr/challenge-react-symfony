@@ -18,13 +18,4 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ]);
     }
-
-    /**
-     * @Route("/lel", name="lel")
-     */
-    public function otherAction(Request $request)
-    {
-        // replace this example code with whatever you need
-        return $this->render('test');
-    }
 }
