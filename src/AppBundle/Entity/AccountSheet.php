@@ -3,6 +3,7 @@
 
     use Doctrine\ORM\Mapping as ORM;
     use Doctrine\Common\Collections\ArrayCollection;
+    use AppBundle\Entity\GenericEntity;
 
     /**
      * @ORM\Entity()
@@ -22,16 +23,6 @@
          * @ORM\Column(type="string")
          */
         protected $name;
-
-        /**
-         * @ORM\Column(type="datetime")
-         */
-        protected $created_at;
-
-        /**
-         * @ORM\Column(type="datetime")
-         */
-        protected $updated_at;
 
         /**
          * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Account", inversedBy="accountSheets")
@@ -70,18 +61,6 @@
         public function setName($name){
             $this->name = $name;
             return $this;
-        }
-
-        /**
-         * @ORM\PrePersist
-         */
-        public function preInsert(){
-            $this->created_at = $this->updated_at = new \DateTime('now');
-        }
-
-        /** @ORM\PreUpdate */
-        public function preUpdate(){
-            $this->updated_at = new \DateTime('now');
         }
 
         public function __destruct(){}

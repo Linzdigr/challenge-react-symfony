@@ -22,6 +22,14 @@
 
         }
 
+        public function getCreatedAt(){
+            return $this->updated_at;
+        }
+
+        public function getUpdatedAt(){
+            return $this->updated_at;
+        }
+
         /**
          * @ORM\PrePersist
          */

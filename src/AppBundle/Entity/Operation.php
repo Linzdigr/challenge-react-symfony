@@ -2,6 +2,7 @@
     namespace AppBundle\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
+    use AppBundle\Entity\GenericEntity;
 
     /**
      * @ORM\Entity()
@@ -39,16 +40,6 @@
          * @ORM\Column(type="string")
          */
         protected $comment;
-
-        /**
-         * @ORM\Column(type="datetime")
-         */
-        protected $created_at;
-
-        /**
-         * @ORM\Column(type="datetime")
-         */
-        protected $updated_at;
 
         /**
          * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AccountSheet", inversedBy="operations")
@@ -92,18 +83,6 @@
 
         public function getMontant(){
             return $this->montant;
-        }
-
-        /**
-         * @ORM\PrePersist
-         */
-        public function preInsert(){
-            $this->created_at = $this->updated_at = \DateTime('now');
-        }
-
-        /** @ORM\PreUpdate */
-        public function preUpdate(){
-            $this->updated_at = \DateTime('now');
         }
 
         public function __destruct(){}

@@ -3,6 +3,7 @@
 
     use Doctrine\ORM\Mapping as ORM;
     use Doctrine\Common\Collections\ArrayCollection;
+    use AppBundle\Entity\GenericEntity;
 
     /**
      * @ORM\Entity()
@@ -28,16 +29,6 @@
         protected $description;
 
         /**
-         * @ORM\Column(type="datetime")
-         */
-        protected $created_at;
-
-        /**
-         * @ORM\Column(type="datetime")
-         */
-        protected $updated_at;
-
-        /**
          * @ORM\OneToMany(targetEntity="Operation", mappedBy="category")
          * @var Operation[]
          */
@@ -58,18 +49,6 @@
 
         public function getCategory(){
             return $this->accountSheet;
-        }
-
-        /**
-         * @ORM\PrePersist
-         */
-        public function preInsert(){
-            $this->created_at = $this->updated_at = new \DateTime('now');
-        }
-
-        /** @ORM\PreUpdate */
-        public function preUpdate(){
-            $this->updated_at = new \DateTime('now');
         }
 
         public function __destruct(){}

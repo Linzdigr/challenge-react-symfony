@@ -72,8 +72,9 @@ class AccountController extends Controller{
         $em = $this->get('doctrine.orm.entity_manager');
         $account = $em->getRepository('AppBundle:Account')
                     ->find($id);
-
-        $em->remove($account);
-        $em->flush();
+        if ($account) {
+            $em->remove($account);
+            $em->flush();
+        }
     }
 }

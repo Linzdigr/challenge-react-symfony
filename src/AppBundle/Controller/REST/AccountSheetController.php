@@ -104,11 +104,12 @@ class AccountSheetController extends Controller{
      */
     public function removeAccountSheetAction($id, Request $request){
         $em = $this->get('doctrine.orm.entity_manager');
-        $account = $em->getRepository('AppBundle:AccountSheet')
+        $aSheet = $em->getRepository('AppBundle:AccountSheet')
                     ->find($id);
-
-        $em->remove($account);
-        $em->flush();
+        if($aSheet){
+            $em->remove($aSheet);
+            $em->flush();
+        }
     }
 
     private function notFound($type){

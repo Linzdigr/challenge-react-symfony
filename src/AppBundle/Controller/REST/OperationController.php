@@ -95,7 +95,9 @@ class OperationController extends Controller{
         $operation = $em->getRepository('AppBundle:Operation')
                     ->find($id);
 
-        $em->remove($operation);
-        $em->flush();
+        if($operation){
+            $em->remove($operation);
+            $em->flush();
+        }
     }
 }
