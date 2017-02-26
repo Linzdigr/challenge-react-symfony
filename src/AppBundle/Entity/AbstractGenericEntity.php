@@ -3,10 +3,13 @@
 
     use Doctrine\ORM\Mapping as ORM;
 
-    /**
-     * @ORM\HasLifecycleCallbacks
-     */
-    abstract class GenericEntity{
+    abstract class AbstractGenericEntity{
+        /**
+         * @ORM\Id
+         * @ORM\Column(type="integer", nullable=false)
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        protected $id;
 
         /**
          * @ORM\Column(type="datetime")

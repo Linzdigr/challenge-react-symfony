@@ -2,22 +2,16 @@
     namespace AppBundle\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
+    use Doctrine\Common\Collections\Criteria;
     use Doctrine\Common\Collections\ArrayCollection;
-    use AppBundle\Entity\GenericEntity;
+    use AppBundle\Entity\AbstractGenericEntity;
 
     /**
      * @ORM\Entity()
      * @ORM\Table(name="accounts",
      *      uniqueConstraints={@ORM\UniqueConstraint(name="accounts_name_unique",columns={"name"})})
-     * @ORM\HasLifecycleCallbacks
      */
-    class Account extends GenericEntity{
-        /**
-         * @ORM\Id
-         * @ORM\Column(type="integer", nullable=false)
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        protected $id;
+    class Account extends AbstractGenericEntity{
 
         /**
          * @ORM\Column(type="string")
@@ -70,6 +64,12 @@
         public function setName($name){
             $this->name = $name;
             return $this;
+        }
+
+        public function getSheetById($id) {
+            $criteria = Criteria::create()->where(Criteria::expr()->eq("id", $id));
+
+            return $this->getAccountSheets()->matching($criteria)[0];
         }
 
         public function __destruct(){}

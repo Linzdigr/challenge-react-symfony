@@ -75,13 +75,6 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-#Migration bundle params, probably used if further commit
-doctrine_migrations:
-    dir_name: "%kernel.root_dir%/DoctrineMigrations"
-    namespace: Application\Migrations
-    table_name: accounts
-    name: Application Migrations
-
 fos_rest:
     zone:
         - { path: ^/api/* }

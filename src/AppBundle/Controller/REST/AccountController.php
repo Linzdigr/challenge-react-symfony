@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Controller\REST;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Controller\REST\BaseRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,7 +9,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use AppBundle\Form\Type\AccountType;
 use AppBundle\Entity\Account;
 
-class AccountController extends Controller{
+class AccountController extends BaseRestController{
     /**
      * @Rest\View()
      * @Rest\Get("/accounts")

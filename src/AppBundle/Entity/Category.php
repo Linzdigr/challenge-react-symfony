@@ -3,20 +3,13 @@
 
     use Doctrine\ORM\Mapping as ORM;
     use Doctrine\Common\Collections\ArrayCollection;
-    use AppBundle\Entity\GenericEntity;
+    use AppBundle\Entity\AbstractGenericEntity;
 
     /**
      * @ORM\Entity()
      * @ORM\Table(name="categories")
-     * @ORM\HasLifecycleCallbacks
      */
-    class Category{
-        /**
-         * @ORM\Id
-         * @ORM\Column(type="integer", nullable=false)
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        protected $id;
+    class Category extends AbstractGenericEntity{
 
         /**
          * @ORM\Column(type="string")

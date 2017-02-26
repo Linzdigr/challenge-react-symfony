@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Controller\REST;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Controller\REST\BaseRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,17 +9,20 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use AppBundle\Form\Type\OperationType;
 use AppBundle\Entity\Operation;
 
-class OperationController extends Controller{
+class OperationController extends BaseRestController{
     /**
      * @Rest\View()
-     * @Rest\Get("/operations")
+     * @Rest\Get("/account/{account_id}/sheets/{sheet_id}/operations")
      */
-    public function getOperationsAction(Request $request){
-        $operations = $this->get('doctrine.orm.entity_manager')
-            ->getRepository('AppBundle:Operation')
-            ->findAll();
+    public function getOperationsAction($account_id, $sheet_id, Request $request){
+        $account = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('AppBundle:Account')
+            ->find($account_id);
 
-        return $operations;
+        if(empty($account))
+            return $this->notFound('Account');
+
+        return $account->getSheetById($sheet_id)->getOperations();
     }
 
     /**

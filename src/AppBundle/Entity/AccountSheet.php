@@ -3,7 +3,7 @@
 
     use Doctrine\ORM\Mapping as ORM;
     use Doctrine\Common\Collections\ArrayCollection;
-    use AppBundle\Entity\GenericEntity;
+    use AppBundle\Entity\AbstractGenericEntity;
 
     /**
      * @ORM\Entity()
@@ -11,13 +11,7 @@
      *      uniqueConstraints={@ORM\UniqueConstraint(name="accountsheet_account_unique", columns={"name", "account_id"})})
      * @ORM\HasLifecycleCallbacks
      */
-    class AccountSheet{
-        /**
-         * @ORM\Id
-         * @ORM\Column(type="integer", nullable=false)
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        protected $id;
+    class AccountSheet extends AbstractGenericEntity{
 
         /**
          * @ORM\Column(type="string")
@@ -45,12 +39,16 @@
             return $this->id;
         }
 
-        public function setAccount(Account $ac){
-            $this->account = $ac;
-        }
-
         public function getName(){
             return $this->name;
+        }
+
+        public function getOperations(){
+            return $this->operations;
+        }
+
+        public function setAccount(Account $ac){
+            $this->account = $ac;
         }
 
         public function setId($id){
