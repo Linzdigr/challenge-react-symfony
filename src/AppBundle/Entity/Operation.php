@@ -47,10 +47,10 @@
         protected $category;
 
         public function __construct($type = null, $label = null, $montant = null, $comment = null){
-            $this->name = $name;
+            $this->label = $label;
+            $this->type = $type;
             $this->comment = $comment;
             $this->montant = $montant;
-            $this->address = $address;
         }
 
         public function getAccountSheet(){
