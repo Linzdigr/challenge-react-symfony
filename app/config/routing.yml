@@ -1,20 +1,4 @@
-accounts:
-    type:     rest
-    resource: AppBundle\Controller\REST\AccountController
-    prefix: 'api'
-
-accountSheets:
-    type:     rest
-    resource: AppBundle\Controller\REST\AccountSheetController
-    prefix: 'api'
-
-operation:
-    type:     rest
-    resource: AppBundle\Controller\REST\OperationController
-    prefix: 'api'
-
-fallback:
-    path: /
-    defaults: { _controller: AppBundle:Default:index, url: null }
-    requirements:
-        url: .*
+api:
+    type:     annotation
+    resource: "@AppBundle/Controller/"
+    prefix: '/api'

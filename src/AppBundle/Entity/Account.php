@@ -4,7 +4,12 @@
     use Doctrine\ORM\Mapping as ORM;
     use Doctrine\Common\Collections\Criteria;
     use Doctrine\Common\Collections\ArrayCollection;
+    use Symfony\Component\Serializer\Annotation\Groups;
     use AppBundle\Entity\AbstractGenericEntity;
+    use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+    // For annotations
+    use Doctrine\Common\Annotations\AnnotationReader;
+    use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 
     /**
      * @ORM\Entity()
@@ -27,6 +32,7 @@
         /**
          * @ORM\OneToMany(targetEntity="AccountSheet", mappedBy="account")
          * @var AccountSheet[]
+         * @Groups({"account"})
          */
         protected $accountSheets;
 

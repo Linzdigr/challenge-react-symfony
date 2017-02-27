@@ -4,7 +4,7 @@ namespace AppBundle\Controller\REST;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class BaseRestController extends Controller{
+abstract class BaseRestController extends Controller{
 
     public function __construct(){
 
