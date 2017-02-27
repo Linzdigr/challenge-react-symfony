@@ -2,12 +2,12 @@
     namespace AppBundle\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
-    use Doctrine\Common\Collections\ArrayCollection;
     use AppBundle\Entity\AbstractGenericEntity;
 
     /**
      * @ORM\Entity()
      * @ORM\Table(name="categories")
+     * @ORM\HasLifecycleCallbacks
      */
     class Category extends AbstractGenericEntity{
 
@@ -21,27 +21,27 @@
          */
         protected $description;
 
-        /**
-         * @ORM\OneToMany(targetEntity="Operation", mappedBy="category")
-         * @var Operation[]
-         */
-        protected $operations;
-
         public function __construct($name = null){
-            $this->operations = new ArrayCollection();
             $this->name = $name;
         }
 
         public function getName(){
             return $this->label;
         }
-
         public function getDescription(){
             return $this->description;
         }
 
-        public function getCategory(){
-            return $this->accountSheet;
+        public function setDescription($str){
+            $this->description = $str;
+
+            return $this;
+        }
+
+        public function setName($str){
+            $this->label = $str;
+
+            return $this;
         }
 
         public function __destruct(){}

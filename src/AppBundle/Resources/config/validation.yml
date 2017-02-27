@@ -11,3 +11,27 @@ AppBundle\Entity\AccountSheet:
         name:
             - NotBlank: ~
             - Type: string
+
+AppBundle\Entity\Operation:
+    properties:
+        type:
+            - NotBlank: ~
+            - Type: integer
+        label:
+            - NotBlank: ~
+            - Type: string
+        comment:
+            - NotBlank: ~
+            - Type: string
+        montant:
+            - NotBlank: ~
+            - Type: float
+
+AppBundle\Entity\Category:
+    properties:
+        label:
+            - NotBlank: ~
+            - Type: string
+        description:
+            - NotBlank: ~
+            - Type: string

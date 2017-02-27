@@ -19,7 +19,7 @@
         protected $name;
 
         /**
-         * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Account", inversedBy="accountSheets")
+         * @ORM\ManyToOne(targetEntity="Account", inversedBy="accountSheets")
          * @var Account
          */
         protected $account;

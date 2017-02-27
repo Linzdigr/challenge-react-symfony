@@ -39,8 +39,7 @@ class AwesomeComponent extends React.Component{
                         </Navigation>
                     </Drawer>
                     <Content>
-                        Likes : <span>{this.state.likesCount}</span>
-                        <Button raised ripple onClick={this.onLike}>Button</Button>
+
                     </Content>
                 </Layout>
             </div>

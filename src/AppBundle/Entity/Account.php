@@ -10,6 +10,7 @@
      * @ORM\Entity()
      * @ORM\Table(name="accounts",
      *      uniqueConstraints={@ORM\UniqueConstraint(name="accounts_name_unique",columns={"name"})})
+     * @ORM\HasLifecycleCallbacks
      */
     class Account extends AbstractGenericEntity{
 

@@ -7,6 +7,7 @@
     /**
      * @ORM\Entity()
      * @ORM\Table(name="operations")
+     * @ORM\HasLifecycleCallbacks
      */
     class Operation extends AbstractGenericEntity{
         /* As columnDefinition="ENUM(type_operation) not working with pg */
@@ -34,14 +35,15 @@
         protected $comment;
 
         /**
-         * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AccountSheet", inversedBy="operations")
+         * @ORM\ManyToOne(targetEntity="AccountSheet", inversedBy="operations")
          * @ORM\JoinColumn(nullable=false)
          * @var AccountSheet
          */
         protected $accountSheet;
 
         /**
-         * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="operations")
+         * @ORM\ManyToOne(targetEntity="Category")
+         * @ORM\JoinColumn(nullable=false)
          * @var Category
          */
         protected $category;
