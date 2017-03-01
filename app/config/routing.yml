@@ -1,4 +1,12 @@
 api:
     type:     annotation
-    resource: "@AppBundle/Controller/"
+    resource: "@AppBundle/Controller/REST"
     prefix: '/api'
+app:
+    path: /{req}
+    defaults: { _controller: 'AppBundle:Default:index' }
+    requirements:
+        req: ".+"
+fallback:
+    path: /
+    defaults: { _controller: 'AppBundle:Default:index' }
