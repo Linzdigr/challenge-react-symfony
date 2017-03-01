@@ -2,12 +2,14 @@
     namespace AppBundle\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
+    use JMS\Serializer\Annotation\Groups;
 
     abstract class AbstractGenericEntity{
         /**
          * @ORM\Id
          * @ORM\Column(type="integer", nullable=false)
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         * @Groups({"default"})
          */
         protected $id;
 

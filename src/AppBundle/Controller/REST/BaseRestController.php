@@ -5,17 +5,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseRestController extends Controller{
-
     public function __construct(){
 
     }
 
+    protected function serialize($data){
+        return $this->container->get('jms_serializer')
+            ->serialize($data, 'json');
+    }
+
+    protected function apiResponse($data, $responseCode = Response::HTTP_OK){
+        if(empty($data))
+            $responseCode = Response::HTTP_NO_CONTENT;
+
+        return (new Response($this->serialize($data), $responseCode));
+    }
+
     protected function notFound($type){
-        return \FOS\RestBundle\View\View::create(['message' => "$type not found"], Response::HTTP_NOT_FOUND);
+        return $this->apiResponse(['message' => "$type not found"], Response::HTTP_NOT_FOUND);
     }
 
     public function __destruct(){
 
     }
-
 }

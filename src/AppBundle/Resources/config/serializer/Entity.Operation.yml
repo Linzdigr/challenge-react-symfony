@@ -1,0 +1,19 @@
+# AppBundle/Resources/config/serializer/Entity.Operation.yml
+AppBundle\Entity\Operation:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+        label:
+            expose: true
+        type:
+            expose: true
+        montant:
+            expose: true
+        comment:
+            expose: true
+        accountSheet:
+            exclude: true
+            expose: false
+        category:
+            expose: true

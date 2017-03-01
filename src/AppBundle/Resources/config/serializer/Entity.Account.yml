@@ -1,0 +1,16 @@
+# AppBundle/Resources/config/serializer/Entity.Account.yml
+AppBundle\Entity\Account:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+            groups: ['account', 'default']
+        name:
+            expose: true
+            groups: ['account']
+        description:
+            expose: true
+            groups: ['account']
+        accountSheets:
+            exclude: true
+            expose: false

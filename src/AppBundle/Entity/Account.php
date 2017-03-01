@@ -4,12 +4,11 @@
     use Doctrine\ORM\Mapping as ORM;
     use Doctrine\Common\Collections\Criteria;
     use Doctrine\Common\Collections\ArrayCollection;
-    use Symfony\Component\Serializer\Annotation\Groups;
     use AppBundle\Entity\AbstractGenericEntity;
-    use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-    // For annotations
-    use Doctrine\Common\Annotations\AnnotationReader;
-    use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+    use JMS\Serializer\Annotation\ExclusionPolicy;
+    use JMS\Serializer\Annotation\Expose;
+    use JMS\Serializer\Annotation\Groups;
+    use JMS\Serializer\Annotation\VirtualProperty;
 
     /**
      * @ORM\Entity()
@@ -21,18 +20,19 @@
 
         /**
          * @ORM\Column(type="string")
+         * @Groups({"account"})
          */
         protected $name;
 
         /**
          * @ORM\Column(type="string")
+         * @Groups({"account"})
          */
         protected $description;
 
         /**
          * @ORM\OneToMany(targetEntity="AccountSheet", mappedBy="account")
          * @var AccountSheet[]
-         * @Groups({"account"})
          */
         protected $accountSheets;
 

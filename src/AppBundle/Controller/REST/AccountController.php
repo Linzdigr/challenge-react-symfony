@@ -3,9 +3,6 @@ namespace AppBundle\Controller\REST;
 
 use AppBundle\Controller\REST\BaseRestController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -22,11 +19,7 @@ class AccountController extends BaseRestController{
             ->getRepository('AppBundle:Account')
             ->findAll();
 
-        $encoder = new JsonEncoder();
-        $normalizer = new ObjectNormalizer($classMetadataFactory);
-
-        $serializer = new Serializer(array($normalizer), array($encoder));
-        return $serializer->serialize($accounts, 'json', array('groups' => array('account')) );
+        return $this->apiResponse($accounts);
     }
 
     /**
@@ -38,11 +31,7 @@ class AccountController extends BaseRestController{
                  ->getRepository('AppBundle:Account')
                  ->find($id);
 
-        $encoder = new JsonEncoder();
-        $normalizer = new ObjectNormalizer();
-
-        $serializer = new Serializer(array($normalizer), array($encoder));
-        return $serializer->serialize($account, 'json', array('groups' => array('account')) );
+        return $this->apiResponse($account);
     }
 
     /**
@@ -61,10 +50,10 @@ class AccountController extends BaseRestController{
             $em->persist($account);
             $em->flush();
 
-            return $account;
+            return $this->apiResponse($account, Response::HTTP_CREATED);
         }
 
-        return $form;
+        return $this->apiResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**
@@ -87,5 +76,7 @@ class AccountController extends BaseRestController{
             $em->remove($account);
             $em->flush();
         }
+
+        return $this->apiResponse([]);
     }
 }

@@ -3,16 +3,16 @@ namespace AppBundle\Controller\REST;
 
 use AppBundle\Controller\REST\BaseRestController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\Controller\Annotations as Rest;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Form\Type\OperationType;
 use AppBundle\Entity\Operation;
 
 class OperationController extends BaseRestController{
     /**
-     * @Rest\View()
-     * @Rest\Get("/account/{account_id}/sheets/{sheet_id}/operations")
+     * @Method("GET")
+     * @Route("/account/{account_id}/sheet/{sheet_id}/operations", name="operation_list")
      */
     public function getOperationsAction($account_id, $sheet_id, Request $request){
         $account = $this->get('doctrine.orm.entity_manager')
@@ -22,28 +22,39 @@ class OperationController extends BaseRestController{
         if(empty($account))
             return $this->notFound('Account');
 
-        return $account->getSheetById($sheet_id)->getOperations();
+        $aSheet = $account->getSheetById($sheet_id);
+
+        if(empty($aSheet))
+            $this->notFound('Sheet');
+
+        return $this->apiResponse($aSheet->getOperations());
     }
 
     /**
-     * @Rest\View()
-     * @Rest\Get("/operation/{id}")
+     * @Method("GET")
+     * @Route("/account/{account_id}/sheet/{sheet_id}/operation/{operation_id}", name="operation_one")
      */
-    public function getOperationAction($id, Request $request){
-        $operation = $this->get('doctrine.orm.entity_manager')
-                 ->getRepository('AppBundle:Operation')
-                 ->find($id);
+    public function getOperationAction($account_id, $sheet_id, $operation_id, Request $request){
+        $account = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('AppBundle:Account')
+            ->find($account_id);
 
-        $operation = new Operation();
+        if(empty($account))
+            return $this->notFound('Account');
 
-        return $operation;
+        $aSheet = $account->getSheetById($sheet_id);
+
+        if(empty($aSheet))
+            $this->notFound('Sheet');
+
+        return $this->apiResponse($aSheet->getOperationById($operation_id));
     }
 
     /**
-     * @Rest\View(statusCode=Response::HTTP_CREATED)
-     * @Rest\Post("/operation")
+     * @Method("POST")
+     * @Route("/account/{account_id}/sheet/{sheet_id}/operation", name="operation_create")
      */
-    public function postOperationAction(Request $request)
+    public function postOperationAction($account_id, $sheet_id, Request $request)
     {
         $operation = new Operation();
 
@@ -62,10 +73,10 @@ class OperationController extends BaseRestController{
     }
 
     /**
-     * @Rest\View()
-     * @Rest\Put("/operation/{id}")
+     * @Method("PUT")
+     * @Route("/account/{account_id}/sheet/{sheet_id}/operation/{operation_id}", name="operation_modify")
      */
-    public function putOperationAction($id, Request $request){
+    public function putOperationAction($account_id, $sheet_id, $operation_id, Request $request){
         $operation = $this->get('doctrine.orm.entity_manager')
                     ->getRepository('AppBundle:Operation')
                     ->find($id);
@@ -90,10 +101,10 @@ class OperationController extends BaseRestController{
     }
 
     /**
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
-     * @Rest\Delete("/operation/{id}")
+     * @Method("DELETE")
+     * @Route("/account/{account_id}/sheet/{sheet_id}/operation/{operation_id}", name="operation_destroy")
      */
-    public function removeOperationAction($id, Request $request){
+    public function removeOperationAction($account_id, $sheet_id, $operation_id, Request $request){
         $em = $this->get('doctrine.orm.entity_manager');
         $operation = $em->getRepository('AppBundle:Operation')
                     ->find($id);

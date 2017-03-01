@@ -1,0 +1,10 @@
+# AppBundle/Resources/config/serializer/Entity.Category.yml
+AppBundle\Entity\Category:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+        label:
+            expose: true
+        description:
+            expose: true
