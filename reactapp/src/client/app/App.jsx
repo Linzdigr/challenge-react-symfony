@@ -1,17 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux'
-
 import { Link, browserHistory } from 'react-router'
+import { changeModalVisibility } from './actions'
+
+import {
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions
+} from 'react-mdl'
 
 class App extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {};
+        this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
     componentDidMount() {
-        
+
     }
     componentWillUnmount() {
 
+    }
+    handleCloseDialog() {
+        this.props.dispatch(changeModalVisibility(false));
     }
     render () {
         return (
@@ -39,11 +52,24 @@ class App extends React.Component {
                 <main className="mdl-layout__content">
                     {this.props.children}
                 </main>
+
+                <Dialog open={this.props.modal.visible}>
+                    <DialogTitle>{this.props.modal.title}</DialogTitle>
+                    <DialogContent>
+                        <p>
+                            {this.props.modal.text}
+                        </p>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button type='button' onClick={this.handleCloseDialog}>OK</Button>
+                        <Button type='button' onClick={this.handleCloseDialog}>Disagree</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }
 }
 
 export default connect((state) => {
-    return { account: state.naviguation.current_account }
+    return { modal: state.modal }
 })(App);

@@ -6,7 +6,6 @@ import {
 } from '../constants'
 
 export default (state = DEFAULT_APP_STATE, action) => {
-    console.log('naviguationReducer state:', CHANGE_CURRENT_ACCOUNT);
     switch(action.type){
         case CHANGE_CURRENT_ACCOUNT:
             return { ...state, current_account: action.payload }

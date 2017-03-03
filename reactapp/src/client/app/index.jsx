@@ -2,18 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
-import { Router, Route, Link, browserHistory, IndexRoute, IndexRedirect  } from 'react-router'
+import { Router, Route, Link, browserHistory, IndexRoute  } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 import { DEFAULT_APP_STATE } from './constants'
 
-import { naviguationReducer } from './reducers'
+import { naviguationReducer, modalReducer } from './reducers'
 
 import { Account, AccountSheet, Operation, Home } from './component';
 
 import App from './App.jsx';
 
 const reducers = combineReducers({
+    modal: modalReducer,
     naviguation: naviguationReducer,
     routing: routerReducer
 })
@@ -43,7 +44,6 @@ ReactDOM.render((
         <Router history={history}>
             <Route path="/" store={store} component={App}>
                 <IndexRoute component={Home} />
-                <IndexRedirect to="/home" />
                 <Route path="home" component={Home} />
                 <Route path="account/:account_id" component={Account} />
                 <Route path="account/:account_id/sheet/:sheet_id" component={AccountSheet} />

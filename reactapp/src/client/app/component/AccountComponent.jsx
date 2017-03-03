@@ -2,7 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux'
 import ReactDOM from 'react-dom';
 import { browserHistory } from 'react-router'
-import { changeCurrentSheet } from '../actions'
+import { FABButton, Icon } from 'react-mdl'
+import {
+    changeCurrentSheet,
+    changeCurrentOperation,
+    changeModalContext,
+    changeModalVisibility
+} from '../actions'
 import axios from 'axios'
 
 class Account extends React.Component {
@@ -16,7 +22,8 @@ class Account extends React.Component {
     }
     componentDidMount() {
         if(this.props.current_account === 0){
-            alert('Vous devez sélectionner un compte en premier lieu!');    // TODO: use mdl modals
+            this.props.dispatch(changeModalContext('Oups', 'Vous devez sélectionner un compte en premier lieu!'));
+            this.props.dispatch(changeModalVisibility(true));
             browserHistory.push('/home');
             return;
         }
@@ -30,6 +37,7 @@ class Account extends React.Component {
     }
     navigateSheet(sheet_id){
         this.props.dispatch(changeCurrentSheet(sheet_id));
+        this.props.dispatch(changeCurrentOperation(0));
         browserHistory.push('/sheet');
     }
    render() {
@@ -62,11 +70,14 @@ class Account extends React.Component {
                     })}
                 </tbody>
             </table>
+            <FABButton className="fixedButton" colored ripple>
+                <Icon name="add" />
+            </FABButton>
          </div>
       )
    }
 }
 
 export default connect((state) => {
-    return { current_account: state.naviguation.current_account }
+    return { current_account: state.naviguation.current_account, modal: state.modal }
 })(Account);

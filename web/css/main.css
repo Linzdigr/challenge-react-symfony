@@ -37,3 +37,25 @@ a{
 .mdl-layout.is-upgraded nav .mdl-layout__tab.is-active::after {
     background-color: transparent;
 }
+
+i.credit, i.debit{
+    font-size: 50px;
+}
+
+i.credit, i.credit-small{
+    color: green;
+}
+
+i.debit, i.debit-small{
+    color: red;
+}
+
+i.credit-small, i.debit-small{
+    font-size: 30px;
+}
+
+.fixedButton{
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}

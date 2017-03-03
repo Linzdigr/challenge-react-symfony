@@ -2,7 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { Link, browserHistory } from 'react-router'
-import { changeCurrentAccount } from '../actions'
+import {
+    changeCurrentAccount,
+    changeCurrentSheet,
+    changeCurrentOperation
+} from '../actions'
 import axios from 'axios'
 
 class Home extends React.Component {
@@ -26,6 +30,8 @@ class Home extends React.Component {
     }
     navigateAccount(id){
         this.props.dispatch(changeCurrentAccount(id));
+        this.props.dispatch(changeCurrentSheet(0));
+        this.props.dispatch(changeCurrentOperation(0));
         browserHistory.push('/account');
     }
     render () {

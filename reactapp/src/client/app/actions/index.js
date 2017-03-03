@@ -1,5 +1,10 @@
 export {
     changeCurrentAccount,
     changeCurrentSheet,
-    changeCurrentOperation
+    changeCurrentOperation,
 } from './naviguation.jsx'
+
+export {
+    changeModalVisibility,
+    changeModalContext
+} from './modal.jsx'
