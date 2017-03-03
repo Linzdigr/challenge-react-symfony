@@ -12,7 +12,7 @@ use AppBundle\Entity\Account;
 class AccountController extends BaseRestController{
     /**
      * @Method("GET")
-     * @Route("/account", name="account_list")
+     * @Route("/accounts", name="account_list")
      */
     public function getAccountsAction(Request $request){
         $accounts = $this->get('doctrine.orm.entity_manager')

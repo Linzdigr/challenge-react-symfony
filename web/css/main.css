@@ -4,8 +4,18 @@ body{
     background: #eeeeee;
 }
 
+header a.mdl-layout__tab{
+    color: white;
+}
+
+main.mdl-layout__content{
+    width: auto;
+    display: block;
+}
+
 a{
     text-decoration: none;
+    cursor: pointer;
 }
 
 #app{
@@ -18,4 +28,12 @@ a{
 
 .mdl-layout__content{
     padding: 30px;
+}
+
+.mdl-layout.is-upgraded nav .mdl-layout__tab.is-active{
+    color: grey;
+}
+
+.mdl-layout.is-upgraded nav .mdl-layout__tab.is-active::after {
+    background-color: transparent;
 }
