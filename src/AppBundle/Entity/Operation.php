@@ -65,12 +65,48 @@
             return $this->accountSheet;
         }
 
+        public function getCategory(){
+            return $this->category;
+        }
+
         public function getType(){
+            return $this->type;
+        }
+
+        public function getLabel(){
             return $this->type;
         }
 
         public function getMontant(){
             return $this->montant;
+        }
+
+        public function getComment(){
+            return $this->comment;
+        }
+
+        public function setLabel($str){
+            $this->label = $str;
+
+            return $this;
+        }
+
+        public function setComment($str){
+            $this->comment = $str;
+
+            return $this;
+        }
+
+        public function setMontant($num){
+            $this->montant = $num;
+
+            return $this;
+        }
+
+        public function setType($type){
+            $this->type = $type;
+
+            return $this;
         }
 
         public function setAccountSheet(AccountSheet $aSheet){

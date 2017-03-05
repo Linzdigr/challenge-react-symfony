@@ -49,6 +49,10 @@ class AccountSheetController extends BaseRestController{
                  ->getRepository('AppBundle:Account')
                  ->find($account_id);
 
+        if ($content = $request->getContent()) {    // TODO: enhance json decode in controllers
+            $jsonPost = json_decode($content, true);
+        }
+
         if(empty($account))
             return $this->notFound('Account');
 
@@ -56,7 +60,7 @@ class AccountSheetController extends BaseRestController{
         $aSheet->setAccount($account);
 
         $form = $this->createForm(AccountSheetType::class, $aSheet);
-        $form->submit($request->request->all()); // Validation des données
+        $form->submit($jsonPost); // Validation des données
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -96,7 +100,7 @@ class AccountSheetController extends BaseRestController{
             return $this->apiResponse($aSheet);
         }
 
-        $this->apiResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
+        return $this->apiResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**

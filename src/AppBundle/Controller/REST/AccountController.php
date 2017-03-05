@@ -42,8 +42,12 @@ class AccountController extends BaseRestController{
     {
         $account = new Account();
 
+        if ($content = $request->getContent()) {    // TODO: enhance json decode in controllers
+            $jsonPost = json_decode($content, true);
+        }
+
         $form = $this->createForm(AccountType::class, $account);
-        $form->submit($request->request->all()); // Validation des données
+        $form->submit($jsonPost); // Validation des données
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');

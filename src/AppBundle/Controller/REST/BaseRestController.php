@@ -5,8 +5,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseRestController extends Controller{
-    public function __construct(){
 
+    protected $parsedJsonRequest;
+
+    public function __construct(){
     }
 
     protected function serialize($data){
@@ -22,7 +24,7 @@ abstract class BaseRestController extends Controller{
     }
 
     protected function notFound($type){
-        return $this->apiResponse(['message' => "$type not found"], Response::HTTP_NOT_FOUND);
+        return $this->apiResponse(['message' => "$type not found or is not provided"], Response::HTTP_NOT_FOUND);
     }
 
     public function __destruct(){

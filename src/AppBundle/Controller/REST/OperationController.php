@@ -58,18 +58,45 @@ class OperationController extends BaseRestController{
     {
         $operation = new Operation();
 
+        if ($content = $request->getContent()) {
+            $jsonPost = json_decode($content, true);
+        }
+
+        if(empty($jsonPost['category_id']))
+            return $this->notFound('category_id');
+
+        $cat = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Category')
+                ->find($jsonPost['category_id']);
+
+        if(empty($cat))
+            return $this->notFound('Category');
+        unset($jsonPost['category_id']);
+
+        $aSheet = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:AccountSheet')
+                ->find($sheet_id);
+
+        if(empty($aSheet))
+            return $this->notFound('Sheet');
+
+        $operation->setCategory($cat);
+
+        $operation->setAccountSheet($aSheet);
+
         $form = $this->createForm(OperationType::class, $operation);
-        $form->submit($request->request->all()); // Validation des données
+
+        $form->submit($jsonPost);
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
             $em->persist($operation);
             $em->flush();
 
-            return $operation;
+            return $this->apiResponse($operation, Response::HTTP_CREATED);
         }
 
-        return $form;
+        return $this->apiResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**
@@ -79,25 +106,42 @@ class OperationController extends BaseRestController{
     public function putOperationAction($account_id, $sheet_id, $operation_id, Request $request){
         $operation = $this->get('doctrine.orm.entity_manager')
                     ->getRepository('AppBundle:Operation')
-                    ->find($id);
+                    ->find($operation_id);
 
-        if (empty($operation)) {
-            return new JsonResponse(['message' => 'Operation not found'], Response::HTTP_NOT_FOUND);
+        if ($content = $request->getContent()) {
+            $jsonPost = json_decode($content, true);
         }
+
+        if (empty($operation))
+            return $this->notFound('Operation');
+
+        if(empty($jsonPost['category_id']))
+            return $this->notFound('category_id');
+
+        $cat = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Category')
+                ->find($jsonPost['category_id']);
+
+        if(empty($cat))
+            return $this->notFound('Category');
+
+        unset($jsonPost['category_id']);
+
+        $operation->setCategory($cat);
 
         $form = $this->createForm(OperationType::class, $operation);
 
-        $form->submit($request->request->all());
+        $form->submit($jsonPost);
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
 
             $em->merge($operation);    // Pas nécessaire, juste pas mesure de clarté
             $em->flush();
-            return $operation;
+            return $this->apiResponse($operation);
         }
 
-        return $form;
+        return $this->apiResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**
@@ -113,5 +157,7 @@ class OperationController extends BaseRestController{
             $em->remove($operation);
             $em->flush();
         }
+
+        return $this->apiResponse([]);
     }
 }

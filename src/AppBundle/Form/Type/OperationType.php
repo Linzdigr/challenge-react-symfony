@@ -11,7 +11,6 @@ class OperationType extends AbstractType
     {
         $builder->add('label');
         $builder->add('type');
-        $builder->add('label');
         $builder->add('montant');
         $builder->add('comment');
     }
