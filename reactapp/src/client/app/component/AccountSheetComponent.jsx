@@ -2,6 +2,7 @@ import React from 'react';
 import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { render } from 'react-dom';
+import { FETCH_OPERATION, RESET_OPERATION } from '../constants'
 import { FABButton, Icon, Tooltip, Chip, ChipContact } from 'react-mdl'
 import {
     changeCurrentOperation,
@@ -14,24 +15,40 @@ class AccountSheet extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            operations: []
+            operations: [],
+            rows: ''
         };
     }
     componentDidMount() {
-        if(this.props.current_account === 0 || this.props.current_sheet === 0){
+        var sheet_id = this.props.params.sheet_id || this.props.current_sheet.id || 0;
+        if(sheet_id === 0){
             this.props.dispatch(changeModalContext('Oups', 'Vous devez sélectionner une feuille de compte en premier lieu!'));
             this.props.dispatch(changeModalVisibility(true));
             browserHistory.push('/home');
             return;
         }
         var _self = this;
-        axios.get(`/api/account/${this.props.current_account}/sheet/${this.props.current_sheet}/operations`).then((response) => {
+        axios.get(`/api/account/${this.props.current_account.id}/sheet/${sheet_id}/operations`).then((response) => {
             _self.setState({ operations: response.data });
+        }).then(() => {
+            _self.updateRows();
         })
     }
     navigateOperation(operation_id){
-        this.props.dispatch(changeCurrentOperation(operation_id));
-        browserHistory.push('/operation');
+        this.props.dispatch((dispatch) => {
+            var prom = axios.get(`/api/account/${this.props.current_account.id}/sheet/${this.props.current_sheet.id}/operation/${operation_id}`);
+            prom.then((response) => {
+                if(response.data.id)
+                    browserHistory.push(`/account/${this.props.current_account.id}/sheet/${this.props.current_sheet.id}/operation/${operation_id}`)
+            })
+            dispatch({
+                type: FETCH_OPERATION,
+                payload: prom
+            })
+        })
+        this.props.dispatch({
+            type: RESET_OPERATION,
+        })
     }
     limitDescChar(val){
         if(!val)
@@ -55,9 +72,54 @@ class AccountSheet extends React.Component {
             </Tooltip>
         )
     }
+    handleDeleteClick(operation_id){
+        var _self = this;
+        axios.delete(`/api/account/${this.props.current_account.id}/sheet/${sheet_id}/operation/${operation_id}`).then(response => {
+            if(response.status === 204){
+                _self.props.dispatch(changeSnackbarContext('Opération supprimée!'));
+                _self.props.dispatch(changeSnackbarVisibility(true));
+                var new_arr = _self.state.operations.filter(el => el.id !== operation_id )
+                _self.setState({ operations: new_arr })
+            }
+        }).then(() => _self.updateRows() )
+    }
+    updateRows(){
+        var r = this.state.operations.map(o => {
+            return (
+                <tr key={o.id}>
+                    <td className="mdl-data-table__cell--non-numeric">{ o.label }</td>
+                    <td>{ o.montant }</td>
+                    <td>{ this.limitDescChar(o.comment) }</td>
+                    <td>{ o.created_at }</td>
+                    <td>
+                        <Chip>
+                            <ChipContact className="mdl-color--teal mdl-color-text--white">{o.category.label[0].toUpperCase()}</ChipContact>
+                            {o.category.label}
+                        </Chip>
+                    </td>
+                    <td>{ this.getIconType() }</td>
+                    {/* Finally using programatic redirection instead of Link due to named route removed in react-router 2.0 (and then, not matching the correct active-tab) */}
+                    <td>
+                        <a onClick={ this.navigateOperation.bind(this, o.id) }>
+                            <Tooltip label={<span><strong>Ouvrir</strong></span>} position="left">
+                                <i className="material-icons">open_in_new</i>
+                            </Tooltip>
+                        </a>
+                        <a onClick={ this.handleDeleteClick.bind(this, o.id) }>
+                            <Tooltip label={<span><strong>Effacer</strong></span>} position="left">
+                                <i className="material-icons">delete_sweep</i>
+                            </Tooltip>
+                        </a>
+                    </td>
+                </tr>
+            )
+        })
+        this.setState({ rows: r });
+    }
     render() {
         return (
            <div>
+            <h5>Opérations de la fiche <strong>{this.props.current_sheet.name}</strong></h5>
               <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                   <thead>
                       <tr>
@@ -71,25 +133,7 @@ class AccountSheet extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                        {this.state.operations.map(o => {
-                            return (
-                                <tr key={o.id}>
-                                    <td className="mdl-data-table__cell--non-numeric">{ o.label }</td>
-                                    <td>{ o.montant }</td>
-                                    <td>{ this.limitDescChar(o.comment) }</td>
-                                    <td>{ o.created_at }</td>
-                                    <td>
-                                        <Chip>
-                                            <ChipContact className="mdl-color--teal mdl-color-text--white">{o.category.label[0].toUpperCase()}</ChipContact>
-                                            {o.category.label}
-                                        </Chip>
-                                    </td>
-                                    <td>{ this.getIconType() }</td>
-                                    {/* Finally using programatic redirection instead of Link due to named route removed in react-router 2.0 (and then, not matching the correct active-tab) */}
-                                    <td><a onClick={ this.navigateOperation.bind(this, o.id) }>Ouvrir</a></td>
-                                </tr>
-                            )
-                        })}
+                        { this.state.rows }
                     </tbody>
                 </table>
                 <FABButton className="fixedButton" colored ripple>

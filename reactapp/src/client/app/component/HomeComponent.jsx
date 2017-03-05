@@ -1,7 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { FETCH_ACCOUNT, RESET_SHEET, RESET_OPERATION } from '../constants'
 
 import { Link, browserHistory } from 'react-router'
+import { Tooltip } from 'react-mdl'
 import {
     changeCurrentAccount,
     changeCurrentSheet,
@@ -29,14 +31,30 @@ class Home extends React.Component {
 
     }
     navigateAccount(id){
-        this.props.dispatch(changeCurrentAccount(id));
-        this.props.dispatch(changeCurrentSheet(0));
-        this.props.dispatch(changeCurrentOperation(0));
-        browserHistory.push('/account');
+        this.props.dispatch((dispatch) => {
+            var prom = axios.get(`/api/account/${id}`);
+            prom.then((response) => {
+                if(response.data.id)
+                    browserHistory.push(`/account/${id}`)
+            })
+            dispatch({
+                type: FETCH_ACCOUNT,
+                payload: prom
+            })
+        })
+
+        this.props.dispatch({
+            type: RESET_SHEET,
+        })
+
+        this.props.dispatch({
+            type: RESET_OPERATION,
+        })
     }
     render () {
         return (
             <div>
+            <h5>Comptes</h5>
                <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                    <thead>
                        <tr>
@@ -50,16 +68,22 @@ class Home extends React.Component {
                    </thead>
                    <tbody>
                        {this.state.accounts.map(o => {
-                           return (
-                               <tr key={o.id}>
-                                   <td className="mdl-data-table__cell--non-numeric">{ o.name }</td>
-                                   <td>-</td>
-                                   <td>-</td>
-                                   <td>{ o.created_at }</td>
-                                   <td>{ o.updated_at }</td>
-                                   <td><a onClick={ this.navigateAccount.bind(this, o.id) }>Ouvrir</a></td>
-                               </tr>
-                           )
+                            return (
+                                <tr key={o.id}>
+                                    <td className="mdl-data-table__cell--non-numeric">{ o.name }</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>{ o.created_at }</td>
+                                    <td>{ o.updated_at }</td>
+                                    <td>
+                                        <a onClick={ this.navigateAccount.bind(this, o.id) }>
+                                            <Tooltip label={<span><strong>Ouvrir</strong></span>} position="left">
+                                                <i className="material-icons">open_in_new</i>
+                                            </Tooltip>
+                                        </a>
+                                    </td>
+                                </tr>
+                            )
                        })}
                    </tbody>
                </table>

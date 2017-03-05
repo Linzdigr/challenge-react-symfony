@@ -14,7 +14,7 @@ export default (state = DEFAULT_APP_STATE, action) => {
                 return { ...state, visible: false }
             }
         case MODAL_CONTEXT:
-            if(typeof action.payload.title === 'string' && typeof action.payload.title === 'string')
+            if(typeof action.payload.title === 'string' && typeof action.payload.text === 'string')
                 return { ...state, title: action.payload.title, text: action.payload.text }
     }
 

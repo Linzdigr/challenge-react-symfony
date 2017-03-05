@@ -1,7 +1,8 @@
-import React from 'react';
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link, browserHistory } from 'react-router'
-import { changeModalVisibility } from './actions'
+import { IconButton, Menu, MenuItem, Snackbar } from 'react-mdl'
+import { changeModalVisibility, changeSnackbarVisibility } from './actions'
 
 import {
     Button,
@@ -16,6 +17,7 @@ class App extends React.Component {
         super(props);
         this.state = {};
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
+        this.handleTimeoutSnackbar = this.handleTimeoutSnackbar.bind(this);
     }
     componentDidMount() {
 
@@ -26,12 +28,22 @@ class App extends React.Component {
     handleCloseDialog() {
         this.props.dispatch(changeModalVisibility(false));
     }
+    handleTimeoutSnackbar(){
+        this.props.dispatch(changeSnackbarVisibility(false));
+    }
     render () {
         return (
             <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
                 <header className="mdl-layout__header">
                     <div className="mdl-layout__header-row">
                         <span className="mdl-layout-title">Ykeo</span>
+                    </div>
+                    <div className="menuWrapper">
+                        <IconButton name="more_vert" id="demo-menu-lower-right" />
+                        <Menu target="demo-menu-lower-right" align="right">
+                            <MenuItem>Gérer les catégories</MenuItem>
+                            <MenuItem>Aide</MenuItem>
+                        </Menu>
                     </div>
                     <div className="mdl-layout__tab-bar mdl-js-ripple-effect mdl-layout--large-screen-only">
                         <Link className="mdl-layout__tab" activeClassName="is-active" to="/home">Accueil</Link>
@@ -62,14 +74,19 @@ class App extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button type='button' onClick={this.handleCloseDialog}>OK</Button>
-                        <Button type='button' onClick={this.handleCloseDialog}>Disagree</Button>
                     </DialogActions>
                 </Dialog>
+                <Snackbar
+                    active={this.props.snackbar.visible}
+                    onTimeout={this.handleTimeoutSnackbar}
+                    >
+                        {this.props.snackbar.text}
+                </Snackbar>
             </div>
         );
     }
 }
 
 export default connect((state) => {
-    return { modal: state.modal }
+    return { modal: state.modal, snackbar: state.snackbar }
 })(App);

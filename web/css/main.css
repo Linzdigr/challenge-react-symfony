@@ -38,6 +38,14 @@ a{
     background-color: transparent;
 }
 
+.mdl-radio.is-upgraded{
+    padding-right: 30px;
+}
+
+.mdl-button{
+    margin-right: 20px;
+}
+
 i.credit, i.debit{
     font-size: 50px;
 }
@@ -58,4 +66,23 @@ i.credit-small, i.debit-small{
     position: fixed;
     bottom: 30px;
     right: 30px;
+}
+
+h5{
+    color: #3b2c5c;
+}
+
+h5:after{
+    height: 2px;
+    background: #3b2c5c;
+    width: 100%;
+    display: block;
+    content: " ";
+    margin-top: 5px;
+}
+
+div.menuWrapper{
+    position: absolute;
+    margin: 18px;
+    right: 10px;
 }
