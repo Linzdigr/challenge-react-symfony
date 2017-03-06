@@ -21,9 +21,9 @@ class Account extends React.Component {
             sheets: [
                 {id: 1, name: 'Sheets...', updated_at: 25, created_at: 250}
             ],
-            newSheetRow: '',
+            newSheetRow: null,
             newTitle: '',
-            rows: ''
+            rows: null
         };
     }
     componentDidMount() {
@@ -72,7 +72,6 @@ class Account extends React.Component {
             if(response.status === 204){
                 _self.props.dispatch(changeSnackbarContext('Fiche de compte supprimée!'));
                 _self.props.dispatch(changeSnackbarVisibility(true));
-                debugger;
                 var new_arr = _self.state.sheets.filter(el => el.id !== sheet_id )
                 _self.setState({ sheets: new_arr })
             }
@@ -87,12 +86,12 @@ class Account extends React.Component {
                     <td>{ o.updated_at }</td>
                     {/* Finally using programatic redirection instead of Link due to named route removed in react-router 2.0 (and then, not matching the correct active-tab) */}
                     <td>
-                        <a onClick={ this.navigateSheet.bind(this, o.id) }>
+                        <a onClick={ this.navigateSheet.bind(this, o.id) } className="actionIcon">
                             <Tooltip label={<span><strong>Ouvrir</strong></span>} position="left">
                                 <i className="material-icons">open_in_new</i>
                             </Tooltip>
                         </a>
-                        <a onClick={ this.handleDeleteClick.bind(this, o.id) }>
+                        <a onClick={ this.handleDeleteClick.bind(this, o.id) } className="actionIcon">
                             <Tooltip label={<span><strong>Effacer</strong></span>} position="left">
                                 <i className="material-icons">delete_sweep</i>
                             </Tooltip>
@@ -113,7 +112,6 @@ class Account extends React.Component {
                 _self.props.dispatch(changeSnackbarVisibility(true));
                 _self.setState({ newSheetRow: '' });
                 _self.setState({ sheets: _self.state.sheets.concat(response.data) });
-                console.log('assigned: ', _self.state);
                 _self.updateRows();
             }
         }).catch(err => {
@@ -140,7 +138,7 @@ class Account extends React.Component {
         )})
         window.scrollTo(0, document.body.scrollHeight);
     }
-   render() {
+    render() {
         return (
             <div>
                 <h5>Feuilles de comptes du compte <strong>{this.props.current_account.name}</strong></h5>

@@ -2,11 +2,17 @@
     namespace AppBundle\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
+    use Doctrine\Common\Collections\Criteria;
+    use Doctrine\Common\Collections\ArrayCollection;
     use AppBundle\Entity\AbstractGenericEntity;
+    use JMS\Serializer\Annotation\ExclusionPolicy;
+    use JMS\Serializer\Annotation\Expose;
+    use JMS\Serializer\Annotation\Groups;
+    use JMS\Serializer\Annotation\VirtualProperty;
 
     /**
      * @ORM\Entity()
-     * @ORM\Table(name="categories")
+     * @ORM\Table(name="categories", uniqueConstraints={@ORM\UniqueConstraint(name="category_name_unique",columns={"label"})})
      * @ORM\HasLifecycleCallbacks
      */
     class Category extends AbstractGenericEntity{
@@ -25,7 +31,7 @@
             $this->name = $name;
         }
 
-        public function getName(){
+        public function getLabel(){
             return $this->label;
         }
         public function getDescription(){
@@ -35,6 +41,11 @@
         public function setDescription($str){
             $this->description = $str;
 
+            return $this;
+        }
+
+        public function setLabel($str){
+            $this->label = $str;
             return $this;
         }
 

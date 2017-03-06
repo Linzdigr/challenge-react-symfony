@@ -60,10 +60,12 @@ export const DEFAULT_APP_STATE = {
             id: 0,
             label: '',
             type: "0",
-            montant: 0,
+            montant: '',
             comment: '',
             category: {
-                id: 0
+                id: 1,
+                label: '',
+                description: ''
             }
         }
     }

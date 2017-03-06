@@ -15,7 +15,6 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            likesCount : 0,
             accounts: [
                 {id: 1, name: 'Compte perso', updated_at: 25, created_at: 250}
             ]
@@ -54,7 +53,7 @@ class Home extends React.Component {
     render () {
         return (
             <div>
-            <h5>Comptes</h5>
+                <h5>Comptes</h5>
                <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                    <thead>
                        <tr>
@@ -76,7 +75,7 @@ class Home extends React.Component {
                                     <td>{ o.created_at }</td>
                                     <td>{ o.updated_at }</td>
                                     <td>
-                                        <a onClick={ this.navigateAccount.bind(this, o.id) }>
+                                        <a onClick={ this.navigateAccount.bind(this, o.id) } className="actionIcon">
                                             <Tooltip label={<span><strong>Ouvrir</strong></span>} position="left">
                                                 <i className="material-icons">open_in_new</i>
                                             </Tooltip>

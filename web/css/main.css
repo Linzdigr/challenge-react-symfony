@@ -46,6 +46,18 @@ a{
     margin-right: 20px;
 }
 
+a.mdl-layout__tab.disabled {
+    color: grey;
+}
+
+.mdl-layout__drawer .is-active{
+    background: #f3f3f3;
+}
+
+.actionIcon{
+    margin-right: 7px;
+}
+
 i.credit, i.debit{
     font-size: 50px;
 }

@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { render } from 'react-dom'
 import axios from 'axios'
-import { FETCH_OPERATION } from '../constants'
+import { FETCH_OPERATION, RESET_OPERATION } from '../constants'
 import {
     changeModalContext,
     changeModalVisibility,
@@ -36,16 +36,21 @@ class Operation extends React.Component {
     componentDidMount() {
         var _self = this;
         var operation_id = this.props.params.operation_id || this.props.current_operation.id || 0;
-        if(operation_id === 0 && this.props.current_sheet.id === 0){
+        if(operation_id === 0 && this.props.current_sheet.id === 0){    // Pas de fiche encore consultée ni de demande d'opération
             this.props.dispatch(changeModalContext('Oups', 'Vous devez sélectionner une opération en premier lieu!'));
             this.props.dispatch(changeModalVisibility(true));
             browserHistory.push('/home');
             return;
         }
-        else if (operation_id !== 0 && this.props.route.path !== 'operation/new') {
+        else if(operation_id !== 0 && this.props.route.path !== 'operation/new'){ // opération déjà consultée mais pas de demande de créa
             this.props.dispatch({
                 type: FETCH_OPERATION,
                 payload: axios.get(`/api/account/${this.props.current_account.id}/sheet/${this.props.current_sheet.id}/operation/${operation_id}`)
+            })
+        }
+        else if(this.props.route.path === 'operation/new' && this.props.current_sheet.id !== 0){  // Demande de créa et fiche déjà consultée
+            this.props.dispatch({   // On reset l'opération courante
+                type: RESET_OPERATION,
             })
         }
         axios.get('/api/categories').then((response) => {
@@ -104,6 +109,7 @@ class Operation extends React.Component {
                 if(response.status === 201){
                     _self.props.dispatch(changeSnackbarContext('Opération crée!'));
                     _self.props.dispatch(changeSnackbarVisibility(true));
+                    browserHistory.push('/sheet')
                 }
                 else{
                     _self.props.dispatch(changeModalContext('Oups', `Une erreur s'est produite`))
@@ -130,6 +136,9 @@ class Operation extends React.Component {
     render() {
         return (
             <div>
+
+                    {(this.props.params.operation_id !== 0 && this.props.current_operation.id !== 0) ? (<h5>Opération <strong>{this.props.current_operation.label}</strong></h5>) : (<h5>Nouvelle opération sur fiche <strong>{this.props.current_sheet.name}</strong></h5>)}
+
                 <Grid>
                     <Cell col={6}>
                         <Textfield
@@ -151,7 +160,7 @@ class Operation extends React.Component {
                         <Textfield
                             onChange={ this.onCommentChange }
                             label="Commentaire..."
-                            value={this.props.current_operation.description}
+                            value={this.props.current_operation.comment}
                             rows={3}
                             style={{width: '100%'}}
                         />

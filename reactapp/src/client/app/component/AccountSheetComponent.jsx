@@ -100,12 +100,12 @@ class AccountSheet extends React.Component {
                     <td>{ this.getIconType() }</td>
                     {/* Finally using programatic redirection instead of Link due to named route removed in react-router 2.0 (and then, not matching the correct active-tab) */}
                     <td>
-                        <a onClick={ this.navigateOperation.bind(this, o.id) }>
+                        <a onClick={ this.navigateOperation.bind(this, o.id) } className="actionIcon">
                             <Tooltip label={<span><strong>Ouvrir</strong></span>} position="left">
                                 <i className="material-icons">open_in_new</i>
                             </Tooltip>
                         </a>
-                        <a onClick={ this.handleDeleteClick.bind(this, o.id) }>
+                        <a onClick={ this.handleDeleteClick.bind(this, o.id) } className="actionIcon">
                             <Tooltip label={<span><strong>Effacer</strong></span>} position="left">
                                 <i className="material-icons">delete_sweep</i>
                             </Tooltip>
@@ -115,6 +115,9 @@ class AccountSheet extends React.Component {
             )
         })
         this.setState({ rows: r });
+    }
+    handleNewClick(e){
+        browserHistory.push('/operation/new');
     }
     render() {
         return (
@@ -136,7 +139,7 @@ class AccountSheet extends React.Component {
                         { this.state.rows }
                     </tbody>
                 </table>
-                <FABButton className="fixedButton" colored ripple>
+                <FABButton onClick={ this.handleNewClick.bind(this) }className="fixedButton" colored ripple>
                     <Icon name="add" />
                 </FABButton>
            </div>

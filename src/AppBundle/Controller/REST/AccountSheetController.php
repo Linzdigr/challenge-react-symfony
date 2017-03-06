@@ -82,6 +82,10 @@ class AccountSheetController extends BaseRestController{
         $account = $em->getRepository('AppBundle:Account')
                     ->find($account_id);
 
+        if ($content = $request->getContent()) {    // TODO: enhance json decode in controllers
+            $jsonPost = json_decode($content, true);
+        }
+
         if(empty($account))
             return $this->notFound('Account');
 
@@ -92,7 +96,7 @@ class AccountSheetController extends BaseRestController{
 
         $form = $this->createForm(AccountSheetType::class, $aSheet);
 
-        $form->submit($request->request->all());
+        $form->submit($jsonPost);
 
         if ($form->isValid()) {
             $em->merge($aSheet);    // Pas nécessaire, juste pas mesure de clarté

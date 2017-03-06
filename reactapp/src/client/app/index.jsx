@@ -12,9 +12,13 @@ import { DEFAULT_APP_STATE } from './constants'
 
 import { naviguationReducer, modalReducer, snackbarReducer } from './reducers'
 
-import { Account, AccountSheet, Operation, Home } from './component';
+import { Account, AccountSheet, Operation, Home, Help, Category } from './component';
 
 import App from './App.jsx';
+
+String.prototype.capitalize = function() {
+    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+};
 
 const reducers = combineReducers({
     modal: modalReducer,
@@ -54,9 +58,11 @@ ReactDOM.render((
                 <Route path="account/:account_id/sheet/:sheet_id/operation/:operation_id" component={Operation} />
 
                 <Route path="account" component={Account} />
+                <Route path="category" component={Category} />
                 <Route path="sheet" component={AccountSheet} />
                 <Route path="operation" component={Operation} />
                 <Route path="operation/new" component={Operation} />
+                <Route path="help" component={Help} />
             </Route>
         </Router>
     </Provider>

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Category;
+use AppBundle\Form\Type\CategoryType;
 
 class CategoryController extends BaseRestController{
     /**
@@ -39,10 +40,14 @@ class CategoryController extends BaseRestController{
      */
     public function postCategoryAction(Request $request)
     {
-        $cat = new Account();
+        $cat = new Category();
 
-        $form = $this->createForm(Category::class, $cat);
-        $form->submit($request->request->all()); // Validation des données
+        if ($content = $request->getContent()) {    // TODO: enhance json decode in controllers
+            $jsonPost = json_decode($content, true);
+        }
+
+        $form = $this->createForm(CategoryType::class, $cat);
+        $form->submit($jsonPost); // Validation des données
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -59,8 +64,28 @@ class CategoryController extends BaseRestController{
      * @Method("PUT")
      * @Route("/category/{id}", name="category_modify", requirements={"id": "\d+"})
      */
-    public function putCategoryAction($id, Request $request){
+    public function putCategoryAction($cat_id, Request $request){
+        $em = $this->get('doctrine.orm.entity_manager');
+        $cat = $em->getRepository('AppBundle:Category')
+                    ->find($cat_id);
 
+        if ($content = $request->getContent())    // TODO: enhance json decode in controllers
+            $jsonPost = json_decode($content, true);
+
+        if(empty($cat))
+            return $this->notFound('Category');
+
+        $form = $this->createForm(CategoryType::class, $cat);
+
+        $form->submit($jsonPost);
+
+        if ($form->isValid()) {
+            $em->merge($cat);    // Pas nécessaire, juste pas mesure de clarté
+            $em->flush();
+            return $this->apiResponse($cat);
+        }
+
+        return $this->apiResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**

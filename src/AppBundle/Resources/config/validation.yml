@@ -28,6 +28,8 @@ AppBundle\Entity\Operation:
             - Type: float
 
 AppBundle\Entity\Category:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
     properties:
         label:
             - NotBlank: ~
