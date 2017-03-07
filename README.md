@@ -1,10 +1,18 @@
 webikeo.akacrow.tech
 ====================
 
-A Symfony project created on February 22, 2017, 7:36 pm.
+A Symfony 3 challenge project
 
+##Techno used
 
-php bin/console doctrine:database:create
+__Backend__
+  - Symfony 3
+  - Doctrine
+  - JMS serializer
 
-CREATE TYPE type_operation AS ENUM ('credit', 'debit'); # as ORM columnDefinition="enum()" notation seems to not working under postgreql
-php bin/console doctrine:schema:update --dump-sql --force
+_Front-end__
+  - Reactjs
+  - Redux
+  - Axios
+  - React-mdl
+  - React-router
