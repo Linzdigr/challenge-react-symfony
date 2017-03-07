@@ -1,4 +1,4 @@
-webikeo.akacrow.tech
+Yeko
 ====================
 
 A Symfony 3 challenge project
@@ -10,7 +10,7 @@ __Backend__
   - Doctrine
   - JMS serializer
 
-_Front-end__
+__Front-end__
   - Reactjs
   - Redux
   - Axios
